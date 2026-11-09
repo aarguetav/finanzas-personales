@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Finanzas personales</title>
+  <link rel="stylesheet" href="/static/tabler.min.css" />
+  <link rel="stylesheet" href="/static/dashboard.css" />
+</head>
+<body>
+  <div class="page app-shell">
+    <header class="app-sidebar d-print-none">
+      <h1 class="navbar-brand navbar-brand-autodark">
+        <a href="#" data-view="dashboard"><span class="brand-mark" aria-hidden="true">F</span><span>Finanzas personales</span></a>
+      </h1>
+      <nav class="navbar-nav" aria-label="Navegación principal">
+        <a class="nav-link" href="#" data-view="dashboard">
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 3v18h18M7 14l4-4 4 4 6-7" /></svg>
+          <span>Dashboard</span>
+        </a>
+        <a class="nav-link" href="#" data-view="movimientos">
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" /></svg>
+          <span>Movimientos</span>
+        </a>
+        <a class="nav-link" href="#" data-view="tarjetas">
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 10h18m-14 5h4" /></svg>
+          <span>Tarjetas</span>
+        </a>
+        <a class="nav-link" href="#" data-view="cola">
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" /><path d="M12 8v4m0 4h.01" /></svg>
+          <span>Cola de revisión</span>
+          <span id="cola-badge" class="badge"></span>
+        </a>
+        <a class="nav-link" href="#" data-view="categorias">
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5" /></svg>
+          <span>Categorías</span>
+        </a>
+        <a class="nav-link" href="#" data-view="cargar">
+          <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 16V4m-5 5 5-5 5 5M4 16v4h16v-4" /></svg>
+          <span>Cargar estados</span>
+        </a>
+      </nav>
+    </header>
+    <main class="page-wrapper app-main">
+      <div class="page-body">
+        <div class="container-xl">
+          <div id="alerta" class="alert alert-danger d-none" role="alert"></div>
+
+          <section id="view-dashboard" aria-labelledby="dashboard-title">
+            <div class="page-header d-print-none">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h2 class="page-title" id="dashboard-title">Tu panorama</h2>
+                  <p class="page-subtitle">Comprende tus gastos y encuentra lo que necesita revisión.</p>
+                </div>
+                <div class="col-auto ms-auto">
+                  <label for="mes-selector" class="form-label">Mes de corte</label>
+                  <select id="mes-selector" class="form-select"></select>
+                </div>
+              </div>
+            </div>
+
+            <form id="dashboard-filtros" class="filter-bar" aria-label="Filtros del dashboard">
+              <div><label class="form-label" for="d-tarjeta">Tarjetas</label><select class="form-select" id="d-tarjeta"></select></div>
+              <div><label class="form-label" for="d-moneda">Moneda</label><select class="form-select" id="d-moneda"><option value="">Todas las monedas</option><option>HNL</option><option>USD</option></select></div>
+              <div><label class="form-label" for="d-categoria">Categoría</label><select class="form-select" id="d-categoria"></select></div>
+              <button class="btn btn-ghost-secondary" id="dashboard-limpiar" type="button">Limpiar filtros</button>
+            </form>
+            <div id="dashboard-vacio" class="empty-state d-none">Aún no hay estados. <a href="#" data-open-view="cargar">Carga un PDF</a> para comenzar.</div>
+            <div id="dashboard-estado" role="status" aria-live="polite" class="dashboard-status"></div>
+            <div id="dashboard-contenido">
+              <div class="kpi-grid">
+                <article class="card kpi-card kpi-primary">
+                  <div class="card-body">
+                    <span class="kpi-icon kpi-icon-blue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7.5h15a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-11a2 2 0 0 1 2-2h13" /><path d="M16 12h4m-4 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0Z" /></svg></span>
+                    <div class="kpi-label">Gasto en lempiras</div>
+                    <div class="kpi-value" id="kpi-hnl">—</div>
+                    <div class="kpi-context" id="comparacion-hnl"></div>
+                  </div>
+                </article>
+                <article class="card kpi-card">
+                  <div class="card-body">
+                    <span class="kpi-icon kpi-icon-teal" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M15.5 8.5c-.7-.7-1.6-1-3-1-1.7 0-2.8.8-2.8 2s1.1 1.8 2.8 2 2.8.8 2.8 2-1.1 2-2.8 2c-1.4 0-2.3-.4-3-1M12 5.5v13" /></svg></span>
+                    <div class="kpi-label">Gasto en dólares</div>
+                    <div class="kpi-value" id="kpi-usd">—</div>
+                    <div class="kpi-context" id="comparacion-usd"></div>
+                  </div>
+                </article>
+                <article class="card kpi-card">
+                  <div class="card-body">
+                    <span class="kpi-icon kpi-icon-neutral" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" /></svg></span>
+                    <div class="kpi-label">Movimientos</div>
+                    <div class="kpi-value" id="kpi-movimientos">—</div>
+                    <div class="kpi-context">En el período y filtros seleccionados</div>
+                  </div>
+                </article>
+                <article class="card kpi-card">
+                  <div class="card-body">
+                    <span class="kpi-icon kpi-icon-warning" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 2.8 19h18.4L12 3Z" /><path d="M12 9v4m0 3h.01" /></svg></span>
+                    <div class="kpi-label">Sin categorizar</div>
+                    <div class="kpi-value" id="kpi-pendientes">—</div>
+                    <a href="#" data-open-view="cola" class="kpi-context">Ver cola de revisión</a>
+                  </div>
+                </article>
+              </div>
+              <div class="dashboard-grid">
+                <article class="card"><div class="card-body">
+                  <h3 class="card-title">¿En qué gastaste?</h3>
+                  <p class="panel-caption">Compras por categoría, ordenadas por monto.</p>
+                  <div class="category-columns">
+                    <div><h4>HNL</h4><div id="categorias-hnl" class="category-bars"></div></div>
+                    <div><h4>USD</h4><div id="categorias-usd" class="category-bars"></div></div>
+                  </div>
+                </div></article>
+                <article class="card"><div class="card-body">
+                  <h3 class="card-title">Evolución del gasto</h3>
+                  <p class="panel-caption">Por mes de corte y filtros actuales. Cada moneda usa su propia escala; los meses sin datos quedan vacíos.</p>
+                  <div class="trend-group"><h4>HNL</h4><div class="chart-frame"><canvas id="chart-evolucion-hnl" aria-label="Evolución de gastos en lempiras" role="img"></canvas></div></div>
+                  <div class="trend-group"><h4>USD</h4><div class="chart-frame"><canvas id="chart-evolucion-usd" aria-label="Evolución de gastos en dólares" role="img"></canvas></div></div>
+                </div></article>
+                <article class="card dashboard-wide"><div class="card-body">
+                  <h3 class="card-title">Otros movimientos</h3>
+                  <p class="panel-caption">Pagos, intereses y categorías excluidas del gasto.</p>
+                  <div class="table-responsive"><table class="table table-vcenter"><thead><tr><th>Categoría</th><th>Moneda</th><th class="text-end">Total</th></tr></thead><tbody id="panel-tarjeta"></tbody></table></div>
+                </div></article>
+              </div>
+            </div>
+          </section>
+
+          <section id="view-tarjetas" class="d-none" aria-labelledby="tarjetas-title">
+            <div class="page-header">
+              <h2 class="page-title" id="tarjetas-title">Tarjetas</h2>
+              <p class="page-subtitle">Identificadas por banco y los últimos cuatro dígitos.</p>
+            </div>
+            <div id="tarjetas-lista" class="cards-grid"></div>
+          </section>
+
+          <section id="view-movimientos" class="d-none" aria-labelledby="movimientos-title">
+            <div class="page-header">
+              <h2 class="page-title" id="movimientos-title">Movimientos</h2>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <form id="filtros" class="row g-2 align-items-end mb-4" aria-label="Filtros de movimientos">
+                  <div class="col-auto">
+                    <label class="form-label" for="f-mes">Mes de corte</label><select id="f-mes" class="form-select"></select>
+                  </div>
+                  <div class="col-auto">
+                    <label class="form-label" for="f-categoria">Categoría</label><select id="f-categoria" class="form-select"></select>
+                  </div>
+                  <div class="col-auto">
+                    <label class="form-label" for="f-moneda">Moneda</label><select id="f-moneda" class="form-select">
+                      <option value="">Moneda</option>
+                      <option value="HNL">HNL</option>
+                      <option value="USD">USD</option>
+                    </select>
+                  </div>
+                  <div class="col-auto">
+                    <label class="form-label" for="f-tarjeta">Tarjetas</label><select id="f-tarjeta" class="form-select"></select>
+                  </div>
+                  <div class="col-auto">
+                    <label class="form-label" for="f-q">Descripción</label><input id="f-q" class="form-control" placeholder="Buscar descripción" />
+                  </div>
+                  <div class="col-auto">
+                    <button class="btn btn-primary" type="submit">Filtrar</button>
+                    <button class="btn" id="f-limpiar" type="button">Limpiar</button>
+                  </div>
+                </form>
+                <div class="table-responsive">
+                  <table class="table table-vcenter" aria-label="Movimientos financieros">
+                    <thead>
+                      <tr>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col" class="text-end">Monto</th>
+                        <th scope="col">Moneda</th>
+                        <th scope="col">Tarjeta</th>
+                        <th scope="col">Categoría</th>
+                        <th scope="col" aria-label="Acciones"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="tabla-movimientos"></tbody>
+                  </table>
+                </div>
+                <nav class="pagination-bar" aria-label="Paginación de movimientos">
+                  <div class="text-secondary" id="pagina-info" aria-live="polite">—</div>
+                  <div class="btn-group">
+                    <button class="btn" id="pagina-anterior" type="button">Anterior</button>
+                    <button class="btn" id="pagina-siguiente" type="button">Siguiente</button>
+                  </div>
+                </nav>
+              </div>
+            </div>
+          </section>
+
+          <section id="view-categorias" class="d-none" aria-labelledby="categorias-title">
+            <div class="page-header"><div><h2 class="page-title" id="categorias-title">Categorías</h2><p class="page-subtitle">Organiza tus movimientos con categorías y colores propios.</p></div></div>
+            <div class="category-management">
+              <article class="card"><div class="card-body"><h3 class="card-title">Agregar categoría</h3>
+                <form id="categoria-form">
+                  <div class="form-field">
+                    <label class="form-label" for="categoria-nombre">Nombre</label>
+                    <input class="form-control" id="categoria-nombre" maxlength="80" required />
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label" for="categoria-color">Color</label>
+                    <input class="form-control form-control-color" type="color" id="categoria-color" value="#0a6fff" />
+                  </div>
+                  <label class="form-check mb-3"><input class="form-check-input" id="categoria-excluida" type="checkbox" /><span class="form-check-label">Excluir del gasto</span></label>
+                  <button class="btn btn-primary" type="submit">Agregar categoría</button>
+                  <div id="categoria-resultado" class="form-result" role="status" aria-live="polite"></div>
+                </form>
+              </div></article>
+              <article class="card"><div class="card-body"><h3 class="card-title">Tus categorías</h3><p class="panel-caption">El color ayuda a reconocer cada grupo; las exclusiones no cuentan como gasto.</p><div id="categorias-lista"></div></div></article>
+            </div>
+          </section>
+
+          <section id="view-cola" class="d-none" aria-labelledby="cola-title">
+            <div class="page-header">
+              <h2 class="page-title" id="cola-title">Cola de revisión</h2>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <p class="panel-caption">
+                  Movimientos sin regla: elige una categoría y se aprende para el resto del histórico.
+                </p>
+                <div class="table-responsive">
+                  <table class="table table-vcenter" aria-label="Movimientos por revisar">
+                    <thead>
+                      <tr>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col" class="text-end">Monto</th>
+                        <th scope="col">Moneda</th>
+                        <th scope="col">Tarjeta</th>
+                        <th scope="col">Categoría</th>
+                        <th scope="col" aria-label="Acciones"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="tabla-cola"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="view-cargar" class="d-none" aria-labelledby="cargar-title">
+            <div class="page-header">
+              <h2 class="page-title" id="cargar-title">Cargar estados</h2>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <p class="panel-caption upload-intro">
+                  Uno o varios PDF de BAC o Ficohsa. Re-subir el mismo archivo no duplica nada.
+                </p>
+                <label class="form-label" for="pdfs">Archivos de estado de cuenta</label>
+                <input
+                  type="file"
+                  id="pdfs"
+                  class="form-control"
+                  accept="application/pdf"
+                  multiple
+                  aria-describedby="upload-help"
+                />
+                <p id="upload-help" class="upload-help">Puedes seleccionar varios archivos PDF a la vez.</p>
+                <div id="resultados" class="upload-results" aria-live="polite"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="/static/chart.umd.min.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

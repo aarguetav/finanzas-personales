@@ -1,0 +1,39 @@
+# Datos personales: NUNCA se commitean
+samples/
+data/
+*.pdf
+
+# Base de datos local
+*.db
+*.sqlite
+*.sqlite3
+*.db-wal
+*.db-shm
+*.db-journal
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite-journal
+*.sqlite3-wal
+*.sqlite3-shm
+*.sqlite3-journal
+
+# Reglas aprendidas por correcciones del usuario (se generan en runtime)
+categories.learned.yaml
+
+# Entorno Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Herramientas locales (se reinstalan desde skills-lock.json)
+.agents/
+.claude/
+
+# Local y del sistema
+.env
+.env.*
+!.env.example
+.DS_Store

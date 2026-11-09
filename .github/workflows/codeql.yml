@@ -1,0 +1,46 @@
+name: CodeQL
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: github/codeql-action/init@9418214df1f2c4b8128c770156c409013b07d6b9 # v3
+        with:
+          languages: python
+          build-mode: none
+      - uses: github/codeql-action/analyze@9418214df1f2c4b8128c770156c409013b07d6b9 # v3
+        with:
+          output: ${{ runner.temp }}/codeql-results
+          upload: never
+          upload-database: false
+      - name: Check analysis results
+        env:
+          RESULTS_DIR: ${{ runner.temp }}/codeql-results
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import sys
+          from pathlib import Path
+
+          files = list(Path(os.environ["RESULTS_DIR"]).glob("*.sarif"))
+          if not files:
+              sys.exit("CodeQL did not produce SARIF results.")
+          findings = sum(
+              len(run.get("results", []))
+              for file in files
+              for run in json.loads(file.read_text())["runs"]
+          )
+          print(f"CodeQL findings: {findings}")
+          if findings:
+              sys.exit("CodeQL found issues; inspect the analysis locally.")
+          PY

@@ -1,0 +1,140 @@
+# Semilla de categorías curada a mano. La app nunca escribe aquí; lo aprendido va
+# a categories.learned.yaml.
+#
+# Un patrón es una subcadena que se compara contra la descripción en mayúsculas y
+# sin acentos. `exclude_from_spend: true` saca la categoría del total de gasto.
+
+categorias:
+  - nombre: Restaurantes
+  - nombre: Cafetería Trabajo
+  - nombre: Delivery
+  - nombre: Supermercados
+  - nombre: Transporte
+  - nombre: Salud y Cuidado Personal
+  - nombre: Tiendas por Departamento
+  - nombre: Entretenimiento
+  - nombre: Suscripciones
+  - nombre: Viajes
+  - nombre: Educación
+  - nombre: Otros
+  - nombre: Sin categorizar
+  - nombre: Pago de tarjeta
+    exclude_from_spend: true
+  - nombre: Intereses y comisiones
+    exclude_from_spend: true
+  - nombre: Seguros
+    exclude_from_spend: true
+  - nombre: Cuota de financiamiento
+    exclude_from_spend: true
+
+reglas:
+  - patron: CHERRYS
+    categoria: Cafetería Trabajo
+  - patron: UBER EATS
+    categoria: Delivery
+  - patron: PEDIDOS YA
+    categoria: Delivery
+  - patron: PEDIDOSYA
+    categoria: Delivery
+  - patron: UBER
+    categoria: Transporte
+  - patron: PIT STOP
+    categoria: Restaurantes
+  - patron: BURGER KING
+    categoria: Restaurantes
+  - patron: MC DONALD
+    categoria: Restaurantes
+  - patron: USAMI
+    categoria: Restaurantes
+  - patron: VIE DE FRANCE
+    categoria: Restaurantes
+  - patron: CAFETANO
+    categoria: Restaurantes
+  - patron: FAN BURGER
+    categoria: Restaurantes
+  - patron: MADRE VIEJA
+    categoria: Restaurantes
+  - patron: PUERTO 1006
+    categoria: Restaurantes
+  - patron: ESPRESSO
+    categoria: Restaurantes
+  - patron: COCO BALEADAS
+    categoria: Restaurantes
+  - patron: ALIMENTOS
+    categoria: Restaurantes
+  - patron: DELICIAS
+    categoria: Restaurantes
+  - patron: "2 Q 3 BAR"
+    categoria: Restaurantes
+  - patron: LA BODEGA SAN RAFAEL
+    categoria: Supermercados
+  - patron: PRONTO MINIX
+    categoria: Supermercados
+  - patron: COMERCIAL RIGUITO
+    categoria: Supermercados
+  - patron: BOMBAU
+    categoria: Transporte
+  - patron: INPOMO
+    categoria: Transporte
+  - patron: LABORATORIOS
+    categoria: Salud y Cuidado Personal
+  - patron: CENTRO DIAGNOSTICO
+    categoria: Salud y Cuidado Personal
+  - patron: CADH RADIOLOGY
+    categoria: Salud y Cuidado Personal
+  - patron: DR JORGE
+    categoria: Salud y Cuidado Personal
+  - patron: DR.GERSON
+    categoria: Salud y Cuidado Personal
+  - patron: LAB. ANALIZA
+    categoria: Salud y Cuidado Personal
+  - patron: PUNTO FARMA
+    categoria: Salud y Cuidado Personal
+  - patron: ELEGANCE STYLE BARBER
+    categoria: Salud y Cuidado Personal
+  - patron: SCANCENTER
+    categoria: Salud y Cuidado Personal
+  - patron: SPORTIA
+    categoria: Tiendas por Departamento
+  - patron: DICAHSA
+    categoria: Tiendas por Departamento
+  - patron: ADMINISTRADORA DE INMU
+    categoria: Tiendas por Departamento
+  - patron: PLAYSTATION
+    categoria: Entretenimiento
+  - patron: OCULUS
+    categoria: Entretenimiento
+  - patron: hostinger
+    categoria: Suscripciones
+  - patron: windscribe
+    categoria: Suscripciones
+  - patron: spotify
+    categoria: Suscripciones
+  - patron: anthropic
+    categoria: Suscripciones
+  - patron: UNITED
+    categoria: Viajes
+  - patron: INTELLISHIP
+    categoria: Educación
+  - patron: GRACIAS POR SU PAGO
+    categoria: Pago de tarjeta
+  - patron: PAGO RECIBIDO
+    categoria: Pago de tarjeta
+  - patron: INTERESES CORRIENTES
+    categoria: Intereses y comisiones
+  - patron: CARGO DE INTERESES
+    categoria: Intereses y comisiones
+  - patron: INCUMPLIMIENTO
+    categoria: Intereses y comisiones
+  - patron: PLAN ALERTAS
+    categoria: Intereses y comisiones
+  - patron: REHAB
+    categoria: Intereses y comisiones
+  - patron: FICOVIDA
+    categoria: Intereses y comisiones
+  - patron: SEGURO DE
+    categoria: Seguros
+  - patron: CUOTA DE EXTRAFINANCIAMIENTO
+    categoria: Cuota de financiamiento
+  - patron: EXTRAFINANCIAMIENTO
+    categoria: Cuota de financiamiento
