@@ -48,8 +48,15 @@ específica.
 El snapshot de 76 archivos pasó Gitleaks 8.30.1 (`dir`) y TruffleHog 3.99.8
 (`filesystem`, sin verificación por red); ambos terminaron sin hallazgos. La
 revisión de patrones de correo y rutas locales tampoco encontró coincidencias.
-Esto no reemplaza el escaneo del historial Git recién creado, que sigue siendo
-requisito antes de publicar.
+
+### Reescaneo del historial nuevo
+
+El repositorio local se inicializó desde cero, sin importar referencias del
+origen. Gitleaks 8.30.1 revisó todas las referencias y TruffleHog 3.99.8 revisó
+la rama `main` sin verificación por red; ambos terminaron sin hallazgos.
+`git fsck --full` tampoco reportó errores. La identidad del commit usa el correo
+`noreply` de GitHub. Se repetirá el escaneo sobre la versión final antes del
+push.
 
 Si aparece una credencial real, revocarla y rotarla aunque se limpie el
 historial. La limpieza del historial es independiente de implementar

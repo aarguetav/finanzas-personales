@@ -7,5 +7,6 @@
 - Para publicar, se eligió crear un repositorio nuevo con historial limpio a
   partir del árbol revisado; ver `docs/auditoria-publicacion.md`.
 - Las pruebas de extremo a extremo usan PDFs sintéticos generados localmente.
-- Siguiente: escanear el historial nuevo antes de publicarlo y después revisar
-  la fase 1.
+- El historial anterior permanece en el repositorio privado; el destino recibe
+  únicamente el árbol revisado y su historial nuevo.
+- Siguiente: revisar la fase 1.
