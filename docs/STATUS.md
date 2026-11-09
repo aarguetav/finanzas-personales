@@ -4,8 +4,8 @@
   un dashboard con filtros, revisión y tarjetas.
 - Preparación para dos usuarios: fase 0 en curso; ver `docs/plans/auth.md`.
 - La app todavía no tiene autenticación ni aislamiento: no desplegar en internet.
-- Para publicar, se eligió crear un repositorio nuevo con historial limpio a
-  partir del árbol revisado; ver `docs/auditoria-publicacion.md`.
+- El árbol revisado se publicó con historial limpio en `aarguetav/finanzas-personales`;
+  ver `docs/auditoria-publicacion.md`.
 - Las pruebas de extremo a extremo usan PDFs sintéticos generados localmente.
 - El historial anterior permanece en el repositorio privado; el destino recibe
   únicamente el árbol revisado y su historial nuevo.

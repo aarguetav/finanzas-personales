@@ -55,8 +55,11 @@ El repositorio local se inicializó desde cero, sin importar referencias del
 origen. Gitleaks 8.30.1 revisó todas las referencias y TruffleHog 3.99.8 revisó
 la rama `main` sin verificación por red; ambos terminaron sin hallazgos.
 `git fsck --full` tampoco reportó errores. La identidad del commit usa el correo
-`noreply` de GitHub. Se repetirá el escaneo sobre la versión final antes del
-push.
+`noreply` de GitHub.
+
+El reescaneo final del árbol y de los tres commits de `main` terminó sin
+hallazgos en ambos escáneres. Después se publicó esa rama en
+`aarguetav/finanzas-personales`.
 
 Si aparece una credencial real, revocarla y rotarla aunque se limpie el
 historial. La limpieza del historial es independiente de implementar
